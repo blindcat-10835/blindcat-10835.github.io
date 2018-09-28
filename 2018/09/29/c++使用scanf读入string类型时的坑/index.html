@@ -108,19 +108,19 @@
 
 
 
-  <meta name="description" content="c++使用scanf函数读入string类型时的坑c++使用scanf函数读入string类型时的坑 使用scanf读取string，使用printf输出 1234567891011121314151617181920212223string a;printf(&quot;使用scanf &amp;amp;a[0]读入：\n&quot;);scanf(&quot;%s&quot;, &amp;amp;a[0]);printf(&quot;使用printf输出\">
+  <meta name="description" content="c++使用scanf函数读入string类型时的坑 使用scanf读取string，使用printf输出 1234567891011121314151617181920212223string a;printf(&quot;使用scanf &amp;amp;a[0]读入：\n&quot;);scanf(&quot;%s&quot;, &amp;amp;a[0]);printf(&quot;使用printf输出\na.c_str()\n%s\n&quot;, a.c_str">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BlindCat">
+<meta property="og:title" content="c++使用scanf函数读入string类型时的坑">
 <meta property="og:url" content="http://blindcat-10835.coding.me/blindcat/2018/09/29/c++使用scanf读入string类型时的坑/index.html">
 <meta property="og:site_name" content="BlindCat">
-<meta property="og:description" content="c++使用scanf函数读入string类型时的坑c++使用scanf函数读入string类型时的坑 使用scanf读取string，使用printf输出 1234567891011121314151617181920212223string a;printf(&quot;使用scanf &amp;amp;a[0]读入：\n&quot;);scanf(&quot;%s&quot;, &amp;amp;a[0]);printf(&quot;使用printf输出\">
+<meta property="og:description" content="c++使用scanf函数读入string类型时的坑 使用scanf读取string，使用printf输出 1234567891011121314151617181920212223string a;printf(&quot;使用scanf &amp;amp;a[0]读入：\n&quot;);scanf(&quot;%s&quot;, &amp;amp;a[0]);printf(&quot;使用printf输出\na.c_str()\n%s\n&quot;, a.c_str">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="c:/Users/BLINDC~1/AppData/Local/Temp/1536677530184.png">
 <meta property="og:image" content="c:/Users/BLINDC~1/AppData/Local/Temp/1536678076854.png">
-<meta property="og:updated_time" content="2018-09-28T17:04:25.687Z">
+<meta property="og:updated_time" content="2018-09-28T17:06:55.910Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BlindCat">
-<meta name="twitter:description" content="c++使用scanf函数读入string类型时的坑c++使用scanf函数读入string类型时的坑 使用scanf读取string，使用printf输出 1234567891011121314151617181920212223string a;printf(&quot;使用scanf &amp;amp;a[0]读入：\n&quot;);scanf(&quot;%s&quot;, &amp;amp;a[0]);printf(&quot;使用printf输出\">
+<meta name="twitter:title" content="c++使用scanf函数读入string类型时的坑">
+<meta name="twitter:description" content="c++使用scanf函数读入string类型时的坑 使用scanf读取string，使用printf输出 1234567891011121314151617181920212223string a;printf(&quot;使用scanf &amp;amp;a[0]读入：\n&quot;);scanf(&quot;%s&quot;, &amp;amp;a[0]);printf(&quot;使用printf输出\na.c_str()\n%s\n&quot;, a.c_str">
 <meta name="twitter:image" content="c:/Users/BLINDC~1/AppData/Local/Temp/1536677530184.png">
 
 
@@ -138,7 +138,7 @@
   };
 </script>
 
-  <title> | BlindCat</title>
+  <title>c++使用scanf函数读入string类型时的坑 | BlindCat</title>
   
 
 
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h1 class="post-title" itemprop="name headline">c++使用scanf函数读入string类型时的坑
               
             
           </h1>
@@ -329,7 +329,7 @@
                 
               
 
-              <time title="创建时间：2018-09-29 01:02:52 / 修改时间：01:04:25" itemprop="dateCreated datePublished" datetime="2018-09-29T01:02:52+08:00">2018-09-29</time>
+              <time title="创建时间：2018-09-29 01:02:52 / 修改时间：01:06:55" itemprop="dateCreated datePublished" datetime="2018-09-29T01:02:52+08:00">2018-09-29</time>
             
 
             
@@ -367,8 +367,7 @@
       
 
       
-        <hr>
-<h2 id="c-使用scanf函数读入string类型时的坑"><a href="#c-使用scanf函数读入string类型时的坑" class="headerlink" title="c++使用scanf函数读入string类型时的坑"></a>c++使用scanf函数读入string类型时的坑</h2><h1 id="c-使用scanf函数读入string类型时的坑-1"><a href="#c-使用scanf函数读入string类型时的坑-1" class="headerlink" title="c++使用scanf函数读入string类型时的坑"></a>c++使用scanf函数读入string类型时的坑</h1><ul>
+        <h1 id="c-使用scanf函数读入string类型时的坑"><a href="#c-使用scanf函数读入string类型时的坑" class="headerlink" title="c++使用scanf函数读入string类型时的坑"></a>c++使用scanf函数读入string类型时的坑</h1><ul>
 <li><p>使用scanf读取string，使用printf输出</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用scanf &amp;a[0]读入：\n"</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, &amp;a[<span class="number">0</span>]);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na.c_str()\n%s\n"</span>, a.c_str());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na\n%s\n"</span>, a);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"使用cout输出\na\n"</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.c_str()\n"</span> &lt;&lt; a.c_str() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.size()\n"</span> &lt;&lt; a.size() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用scanf a读入：\n"</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, a);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na.c_str()\n%s\n"</span>, a.c_str());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na\n%s\n"</span>, a);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"使用cout输出\na\n"</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.c_str()\n"</span> &lt;&lt; a.c_str() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.size()\n"</span> &lt;&lt; a.size() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  </span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用cin&gt;&gt;读入：\n"</span>);</span><br><span class="line"><span class="built_in">cin</span> &gt;&gt; a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na.c_str()\n%s\n"</span>, a.c_str());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na\n%s\n"</span>, a);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"使用cout输出\na\n"</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.c_str()\n"</span> &lt;&lt; a.c_str() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.size()\n"</span> &lt;&lt; a.size() &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
 <p>输出结果：</p>
@@ -411,8 +410,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/29/7-44 基于词频的文件相似度/" rel="next" title="7-44基于词频的文件相似度">
-                <i class="fa fa-chevron-left"></i> 7-44基于词频的文件相似度
+              <a href="/2018/09/28/hello-world/" rel="next" title="Hello World！">
+                <i class="fa fa-chevron-left"></i> Hello World！
               </a>
             
           </div>
@@ -420,6 +419,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/29/7-44 基于词频的文件相似度/" rel="prev" title="7-44基于词频的文件相似度">
+                7-44基于词频的文件相似度 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -529,7 +532,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c-使用scanf函数读入string类型时的坑"><span class="nav-number">1.</span> <span class="nav-text">c++使用scanf函数读入string类型时的坑</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c-使用scanf函数读入string类型时的坑-1"><span class="nav-number"></span> <span class="nav-text">c++使用scanf函数读入string类型时的坑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#坑点"><span class="nav-number">1.</span> <span class="nav-text">坑点</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#c-使用scanf函数读入string类型时的坑"><span class="nav-number">1.</span> <span class="nav-text">c++使用scanf函数读入string类型时的坑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#坑点"><span class="nav-number">1.1.</span> <span class="nav-text">坑点</span></a></li></ol></li></ol></div>
             
 
           </div>
