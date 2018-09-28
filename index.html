@@ -281,6 +281,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blindcat-10835.coding.me/blindcat/2018/09/29/c++使用scanf读入string类型时的坑/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BlindCat">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BlindCat">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/29/c++使用scanf读入string类型时的坑/" itemprop="url">
+                  c++使用scanf函数读入string类型时的坑
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-29 01:02:52 / 修改时间：01:06:55" itemprop="dateCreated datePublished" datetime="2018-09-29T01:02:52+08:00">2018-09-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="c-使用scanf函数读入string类型时的坑"><a href="#c-使用scanf函数读入string类型时的坑" class="headerlink" title="c++使用scanf函数读入string类型时的坑"></a>c++使用scanf函数读入string类型时的坑</h1><ul>
+<li><p>使用scanf读取string，使用printf输出</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用scanf &amp;a[0]读入：\n"</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, &amp;a[<span class="number">0</span>]);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na.c_str()\n%s\n"</span>, a.c_str());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na\n%s\n"</span>, a);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"使用cout输出\na\n"</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.c_str()\n"</span> &lt;&lt; a.c_str() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.size()\n"</span> &lt;&lt; a.size() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用scanf a读入：\n"</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, a);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na.c_str()\n%s\n"</span>, a.c_str());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na\n%s\n"</span>, a);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"使用cout输出\na\n"</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.c_str()\n"</span> &lt;&lt; a.c_str() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.size()\n"</span> &lt;&lt; a.size() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  </span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用cin&gt;&gt;读入：\n"</span>);</span><br><span class="line"><span class="built_in">cin</span> &gt;&gt; a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na.c_str()\n%s\n"</span>, a.c_str());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na\n%s\n"</span>, a);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"使用cout输出\na\n"</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.c_str()\n"</span> &lt;&lt; a.c_str() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.size()\n"</span> &lt;&lt; a.size() &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<p><img src="C:\Users\BLINDC~1\AppData\Local\Temp\1536677530184.png" alt="1536677530184"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> a, b;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用scanf a读入：\n"</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, a);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, b);</span><br><span class="line"><span class="keyword">bool</span> i = <span class="literal">true</span>;</span><br><span class="line">i = a &gt; b;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">i = b &gt; a;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">i = b == a;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>输出结果：<br>  <img src="C:\Users\BLINDC~1\AppData\Local\Temp\1536678076854.png" alt="1536678076854"></p>
+<h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>  从上面测试程序可见：</p>
+<ul>
+<li>对于<code>#include &lt;string&gt;</code>中的<code>string</code>类型，<strong>只有<code>cin</code>可以正确处理</strong></li>
+<li>使用<code>scanf</code>，会导致在对<code>vector&lt;string&gt;</code>使用<code>#include &lt;algorithm&gt;</code>中的<code>sort</code>进行排序时无效，尽管它可以正确输出存储的<code>string</code></li>
+<li><strong>原因是，所有使用<code>scanf</code>读入的<code>string</code>都被认为是相等的</strong></li>
+<li>必须使用<code>scanf</code>读取<code>string</code>时，<strong>使用<code>scanf(&quot;%s&quot;, a);</code></strong>,而非<code>scanf(&quot;%s&quot;, &amp;a[0]);</code>,此时，<strong>若要使用<code>cout</code>输出，必须使用<code>cout&lt;&lt;a.c_str();</code></strong></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blindcat-10835.coding.me/blindcat/2018/09/29/7-44 基于词频的文件相似度/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -397,161 +552,6 @@
 <li><code>tolower</code> <code>isalpah</code>之类的小玩意</li>
 </ul>
 </li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blindcat-10835.coding.me/blindcat/2018/09/29/c++使用scanf读入string类型时的坑/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BlindCat">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BlindCat">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/29/c++使用scanf读入string类型时的坑/" itemprop="url">
-                  c++使用scanf函数读入string类型时的坑
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-29 01:02:52 / 修改时间：01:06:55" itemprop="dateCreated datePublished" datetime="2018-09-29T01:02:52+08:00">2018-09-29</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="c-使用scanf函数读入string类型时的坑"><a href="#c-使用scanf函数读入string类型时的坑" class="headerlink" title="c++使用scanf函数读入string类型时的坑"></a>c++使用scanf函数读入string类型时的坑</h1><ul>
-<li><p>使用scanf读取string，使用printf输出</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用scanf &amp;a[0]读入：\n"</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, &amp;a[<span class="number">0</span>]);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na.c_str()\n%s\n"</span>, a.c_str());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na\n%s\n"</span>, a);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"使用cout输出\na\n"</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.c_str()\n"</span> &lt;&lt; a.c_str() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.size()\n"</span> &lt;&lt; a.size() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用scanf a读入：\n"</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, a);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na.c_str()\n%s\n"</span>, a.c_str());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na\n%s\n"</span>, a);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"使用cout输出\na\n"</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.c_str()\n"</span> &lt;&lt; a.c_str() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.size()\n"</span> &lt;&lt; a.size() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  </span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用cin&gt;&gt;读入：\n"</span>);</span><br><span class="line"><span class="built_in">cin</span> &gt;&gt; a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na.c_str()\n%s\n"</span>, a.c_str());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na\n%s\n"</span>, a);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"使用cout输出\na\n"</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.c_str()\n"</span> &lt;&lt; a.c_str() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.size()\n"</span> &lt;&lt; a.size() &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
-<p>输出结果：</p>
-<p><img src="C:\Users\BLINDC~1\AppData\Local\Temp\1536677530184.png" alt="1536677530184"></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> a, b;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用scanf a读入：\n"</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, a);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, b);</span><br><span class="line"><span class="keyword">bool</span> i = <span class="literal">true</span>;</span><br><span class="line">i = a &gt; b;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">i = b &gt; a;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">i = b == a;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>输出结果：<br>  <img src="C:\Users\BLINDC~1\AppData\Local\Temp\1536678076854.png" alt="1536678076854"></p>
-<h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>  从上面测试程序可见：</p>
-<ul>
-<li>对于<code>#include &lt;string&gt;</code>中的<code>string</code>类型，<strong>只有<code>cin</code>可以正确处理</strong></li>
-<li>使用<code>scanf</code>，会导致在对<code>vector&lt;string&gt;</code>使用<code>#include &lt;algorithm&gt;</code>中的<code>sort</code>进行排序时无效，尽管它可以正确输出存储的<code>string</code></li>
-<li><strong>原因是，所有使用<code>scanf</code>读入的<code>string</code>都被认为是相等的</strong></li>
-<li>必须使用<code>scanf</code>读取<code>string</code>时，<strong>使用<code>scanf(&quot;%s&quot;, a);</code></strong>,而非<code>scanf(&quot;%s&quot;, &amp;a[0]);</code>,此时，<strong>若要使用<code>cout</code>输出，必须使用<code>cout&lt;&lt;a.c_str();</code></strong></li>
 </ul>
 
           
