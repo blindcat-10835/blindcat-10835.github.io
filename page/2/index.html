@@ -108,25 +108,20 @@
 
 
 
-  <meta name="description" content="7-44 基于词频的文件相似度原题地址 7-44 基于词频的文件相似度 （30 point(s)）实现一种简单原始的文件相似度计算，即以两文件的公共词汇占总词汇的比例来定义相似度。为简化问题，这里不考虑中文（因为分词太难了），只考虑长度不小于3、且不超过10的英文单词，长度超过10的只考虑前10个字母。 输入格式:输入首先给出正整数N（≤100），为文件总数。随后按以下格式给出每个文件的内容：首先">
-<meta name="keywords" content="c++ PTA">
-<meta property="og:type" content="article">
-<meta property="og:title" content="7-44基于词频的文件相似度">
-<meta property="og:url" content="http://blindcat-10835.coding.me/blindcat/2018/09/12/7-44 基于词频的文件相似度/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="BlindCat">
+<meta property="og:url" content="http://blindcat-10835.coding.me/blindcat/page/2/index.html">
 <meta property="og:site_name" content="BlindCat">
-<meta property="og:description" content="7-44 基于词频的文件相似度原题地址 7-44 基于词频的文件相似度 （30 point(s)）实现一种简单原始的文件相似度计算，即以两文件的公共词汇占总词汇的比例来定义相似度。为简化问题，这里不考虑中文（因为分词太难了），只考虑长度不小于3、且不超过10的英文单词，长度超过10的只考虑前10个字母。 输入格式:输入首先给出正整数N（≤100），为文件总数。随后按以下格式给出每个文件的内容：首先">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-11-04T14:24:03.614Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="7-44基于词频的文件相似度">
-<meta name="twitter:description" content="7-44 基于词频的文件相似度原题地址 7-44 基于词频的文件相似度 （30 point(s)）实现一种简单原始的文件相似度计算，即以两文件的公共词汇占总词汇的比例来定义相似度。为简化问题，这里不考虑中文（因为分词太难了），只考虑长度不小于3、且不超过10的英文单词，长度超过10的只考虑前10个字母。 输入格式:输入首先给出正整数N（≤100），为文件总数。随后按以下格式给出每个文件的内容：首先">
+<meta name="twitter:title" content="BlindCat">
 
 
 
 
 
 
-  <link rel="canonical" href="http://blindcat-10835.coding.me/blindcat/2018/09/12/7-44 基于词频的文件相似度/"/>
+  <link rel="canonical" href="http://blindcat-10835.coding.me/blindcat/page/2/"/>
 
 
 
@@ -136,7 +131,7 @@
   };
 </script>
 
-  <title>7-44基于词频的文件相似度 | BlindCat</title>
+  <title>BlindCat</title>
   
 
 
@@ -183,7 +178,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -268,9 +264,9 @@
           
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -302,7 +298,11 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">7-44基于词频的文件相似度
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/12/7-44 基于词频的文件相似度/" itemprop="url">
+                  7-44基于词频的文件相似度
+                </a>
               
             
           </h1>
@@ -377,7 +377,9 @@
       
 
       
-        <h1 id="7-44-基于词频的文件相似度"><a href="#7-44-基于词频的文件相似度" class="headerlink" title="7-44 基于词频的文件相似度"></a>7-44 基于词频的文件相似度</h1><p><a href="https://pintia.cn/problem-sets/15/problems/891" target="_blank" rel="noopener">原题地址</a></p>
+        
+          
+            <h1 id="7-44-基于词频的文件相似度"><a href="#7-44-基于词频的文件相似度" class="headerlink" title="7-44 基于词频的文件相似度"></a>7-44 基于词频的文件相似度</h1><p><a href="https://pintia.cn/problem-sets/15/problems/891" target="_blank" rel="noopener">原题地址</a></p>
 <h3 id="7-44-基于词频的文件相似度-（30-point-s-）"><a href="#7-44-基于词频的文件相似度-（30-point-s-）" class="headerlink" title="7-44 基于词频的文件相似度 （30 point(s)）"></a>7-44 基于词频的文件相似度 （30 point(s)）</h3><p>实现一种简单原始的文件相似度计算，即以两文件的公共词汇占总词汇的比例来定义相似度。为简化问题，这里不考虑中文（因为分词太难了），只考虑长度不小于3、且不超过10的英文单词，长度超过10的只考虑前10个字母。</p>
 <h3 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式:"></a>输入格式:</h3><p>输入首先给出正整数N（≤100），为文件总数。随后按以下格式给出每个文件的内容：首先给出文件正文，最后在一行中只给出一个字符<code>#</code>，表示文件结束。在N个文件内容结束之后，给出查询总数M（≤104），随后M行，每行给出一对文件编号，其间以空格分隔。这里假设文件按给出的顺序从1到N编号。</p>
 <h3 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式:"></a>输出格式:</h3><p>针对每一条查询，在一行中输出两文件的相似度，即两文件的公共词汇量占两文件总词汇量的百分比，精确到小数点后1位。注意这里的一个“单词”只包括仅由英文字母组成的、长度不小于3、且不超过10的英文单词，长度超过10的只考虑前10个字母。单词间以任何非英文字母隔开。另外，大小写不同的同一单词被认为是相同的单词，例如“You”和“you”是同一个单词。</p>
@@ -408,6 +410,8 @@
 </li>
 </ul>
 
+          
+        
       
     </div>
 
@@ -425,40 +429,14 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/c-PTA/" rel="tag"># c++ PTA</a>
-          
-        </div>
+
+      
+
       
 
       
       
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/09/12/c++使用scanf读入string类型时的坑/" rel="next" title="c++使用scanf函数读入string类型时的坑">
-                <i class="fa fa-chevron-left"></i> c++使用scanf函数读入string类型时的坑
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/29/网站建设计划/" rel="prev" title="网站建设计划">
-                网站建设计划 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -468,15 +446,185 @@
   </article>
 
 
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blindcat-10835.coding.me/blindcat/2018/09/12/c++使用scanf读入string类型时的坑/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BlindCat">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BlindCat">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/12/c++使用scanf读入string类型时的坑/" itemprop="url">
+                  c++使用scanf函数读入string类型时的坑
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-12 20:12:56" itemprop="dateCreated datePublished" datetime="2018-09-12T20:12:56+08:00">2018-09-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-11-04 22:33:04" itemprop="dateModified" datetime="2018-11-04T22:33:04+08:00">2018-11-04</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="c-使用scanf函数读入string类型时的坑"><a href="#c-使用scanf函数读入string类型时的坑" class="headerlink" title="c++使用scanf函数读入string类型时的坑"></a>c++使用scanf函数读入string类型时的坑</h1><ul>
+<li><p>使用scanf读取string，使用printf输出</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用scanf &amp;a[0]读入：\n"</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, &amp;a[<span class="number">0</span>]);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na.c_str()\n%s\n"</span>, a.c_str());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na\n%s\n"</span>, a);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"使用cout输出\na\n"</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.c_str()\n"</span> &lt;&lt; a.c_str() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.size()\n"</span> &lt;&lt; a.size() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用scanf a读入：\n"</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, a);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na.c_str()\n%s\n"</span>, a.c_str());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na\n%s\n"</span>, a);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"使用cout输出\na\n"</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.c_str()\n"</span> &lt;&lt; a.c_str() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.size()\n"</span> &lt;&lt; a.size() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  </span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用cin&gt;&gt;读入：\n"</span>);</span><br><span class="line"><span class="built_in">cin</span> &gt;&gt; a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na.c_str()\n%s\n"</span>, a.c_str());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用printf输出\na\n%s\n"</span>, a);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"使用cout输出\na\n"</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.c_str()\n"</span> &lt;&lt; a.c_str() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"a.size()\n"</span> &lt;&lt; a.size() &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<p><img src="1536677530184.png" alt="1536677530184"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> a, b;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"使用scanf a读入：\n"</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, a);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, b);</span><br><span class="line"><span class="keyword">bool</span> i = <span class="literal">true</span>;</span><br><span class="line">i = a &gt; b;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">i = b &gt; a;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">i = b == a;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>输出结果：<br>  <img src="1536678076854.png" alt="1536678076854"></p>
+<h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>  从上面测试程序可见：</p>
+<ul>
+<li>对于<code>#include &lt;string&gt;</code>中的<code>string</code>类型，<strong>只有<code>cin</code>可以正确处理</strong></li>
+<li>使用<code>scanf</code>，会导致在对<code>vector&lt;string&gt;</code>使用<code>#include &lt;algorithm&gt;</code>中的<code>sort</code>进行排序时无效，尽管它可以正确输出存储的<code>string</code></li>
+<li><strong>原因是，所有使用<code>scanf</code>读入的<code>string</code>都被认为是相等的</strong></li>
+<li>必须使用<code>scanf</code>读取<code>string</code>时，<strong>使用<code>scanf(&quot;%s&quot;, a);</code></strong>,而非<code>scanf(&quot;%s&quot;, &amp;a[0]);</code>,此时，<strong>若要使用<code>cout</code>输出，必须使用<code>cout&lt;&lt;a.c_str();</code></strong></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
           
-
-  
-
-
 
         </div>
         
@@ -497,17 +645,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -573,22 +712,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#7-44-基于词频的文件相似度"><span class="nav-number">1.</span> <span class="nav-text">7-44 基于词频的文件相似度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-44-基于词频的文件相似度-（30-point-s-）"><span class="nav-number">1.0.1.</span> <span class="nav-text">7-44 基于词频的文件相似度 （30 point(s)）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入格式"><span class="nav-number">1.0.2.</span> <span class="nav-text">输入格式:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出格式"><span class="nav-number">1.0.3.</span> <span class="nav-text">输出格式:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入样例"><span class="nav-number">1.0.4.</span> <span class="nav-text">输入样例:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出样例"><span class="nav-number">1.0.5.</span> <span class="nav-text">输出样例:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析："><span class="nav-number">1.1.</span> <span class="nav-text">分析：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AC代码："><span class="nav-number">1.2.</span> <span class="nav-text">AC代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#心得："><span class="nav-number">1.3.</span> <span class="nav-text">心得：</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -719,10 +842,6 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
-
-
 
   
 
