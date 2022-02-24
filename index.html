@@ -89,7 +89,6 @@
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
         <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
         <li class="menu-item menu-item-share"><a href="/share/" rel="section"><i class="fas fa-star fa-fw"></i>Share</a></li>
-        <li class="menu-item menu-item-guestbook"><a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>Guestbook</a></li>
   </ul>
 </nav>
 
@@ -133,18 +132,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -196,6 +195,144 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blindcat-10835.github.io/2022/02/24/%E4%BD%BF%E7%94%A8python2%E5%BA%93paramiko-%E6%A8%A1%E6%8B%9Fssh%E7%99%BB%E5%BD%95%E7%BB%88%E7%AB%AF%EF%BC%8C%E6%A6%82%E7%8E%87%E6%80%A7%E5%87%BA%E7%8E%B0coredump/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BlindCat">
+      <meta itemprop="description" content="Tempus edax, homo edacior">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BlindCat">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/02/24/%E4%BD%BF%E7%94%A8python2%E5%BA%93paramiko-%E6%A8%A1%E6%8B%9Fssh%E7%99%BB%E5%BD%95%E7%BB%88%E7%AB%AF%EF%BC%8C%E6%A6%82%E7%8E%87%E6%80%A7%E5%87%BA%E7%8E%B0coredump/" class="post-title-link" itemprop="url">使用python2库 paramiko 模拟ssh登录终端，概率性出现coredump</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-02-24 18:27:51 / Modified: 18:35:13" itemprop="dateCreated datePublished" datetime="2022-02-24T18:27:51+08:00">2022-02-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/share/" itemprop="url" rel="index"><span itemprop="name">share</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline: </span>
+  
+    <a title="waline" href="/2022/02/24/%E4%BD%BF%E7%94%A8python2%E5%BA%93paramiko-%E6%A8%A1%E6%8B%9Fssh%E7%99%BB%E5%BD%95%E7%BB%88%E7%AB%AF%EF%BC%8C%E6%A6%82%E7%8E%87%E6%80%A7%E5%87%BA%E7%8E%B0coredump/#waline-comments" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" id="/2022/02/24/%E4%BD%BF%E7%94%A8python2%E5%BA%93paramiko-%E6%A8%A1%E6%8B%9Fssh%E7%99%BB%E5%BD%95%E7%BB%88%E7%AB%AF%EF%BC%8C%E6%A6%82%E7%8E%87%E6%80%A7%E5%87%BA%E7%8E%B0coredump/" data-xid="/2022/02/24/%E4%BD%BF%E7%94%A8python2%E5%BA%93paramiko-%E6%A8%A1%E6%8B%9Fssh%E7%99%BB%E5%BD%95%E7%BB%88%E7%AB%AF%EF%BC%8C%E6%A6%82%E7%8E%87%E6%80%A7%E5%87%BA%E7%8E%B0coredump/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h2><p>自动化场景下，使用python 库paramiko 模拟ssh登录终端，概率性出现无法判断终端类型，导致terminal_get_size获取终端大小失败，终端大小读取为65535*65535，进而导致terminal_change_size时，申请65535*65535的内存失败。</p>
+<p>此后，执行re_clear_display刷新当前屏幕信息时，访问越界导致概率性coredump</p>
+<h2 id="问题日志"><a href="#问题日志" class="headerlink" title="问题日志"></a>问题日志</h2><blockquote>
+<p>#0 0xb6a1e7e8 in re_clear_display () from /usr/lib/libedit.so.0</p>
+<p>(gdb) bt</p>
+<p>#0 0xb6a1e7e8 in re_clear_display () from /usr/lib/libedit.so.0</p>
+<p>#1 0xb6a1bf10 in read_prepare (el=0xd36c18) at read.c:432</p>
+<p>#2 0xb6a1c1cc in el_wgets (el=0xd36c18, nread=0xbecbd8fc) at read.c:508</p>
+<p>#3 0xb6a150ac in el_gets () from /usr/lib/libedit.so.0</p>
+<p>#4 0xb6a3251c in readline (p=0x40541c ‘ ‘ &lt;repeats 12 times&gt;, “Copyright(C) 2013-2</p>
+<p>#5 0x004022f8 in get_user_input () at /home/workspace/V2R2_trunk/application/src/a</p>
+<p>#6 main (argc=<optimized out>, argv=<optimized out>) at /home/workspace/V2R2_trunk</optimized></optimized></p>
+<p>(gdb) frame #1</p>
+<p>Invalid character ‘#’ in expression.</p>
+<p>(gdb) frame 1</p>
+<p>#1 0xb6a1bf10 in read_prepare (el=0xd36c18) at read.c:432</p>
+<p>432   read.c: No such file or directory.</p>
+<p>(gdb) print el-&gt;el_terminal</p>
+<p>$1 = {t_name = 0x0, t_size = {h = 65535, v = 65535}, t_flags = 0, t_buf = 0xd37fe8</p>
+<p>t_fkey = 0xd38ff8}</p>
+<p>(gdb) frame 4</p>
+<p>#4 0xb6a3251c in readline (p=0x40541c ‘ ‘ &lt;repeats 12 times&gt;, “Copyright(C) 2013-2</p>
+<p>455   readline.c: No such file or directory.</p>
+</blockquote>
+<h2 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">a[get_user_input]--&gt;b[readline]</span><br><span class="line">b--&gt;rl_initialize--&gt;el_init_internal--&gt;terminal_init--&gt;terminal_set--&gt;terminal_change_size--&gt;terminal_rebuffer_display--&gt;terminal_alloc_display--&gt;terminal_alloc_buffer--申请内存失败--&gt;c</span><br><span class="line">b--&gt;el_gets--&gt;el_wgets--&gt;read_prepare--&gt;re_clear_display--&gt;c[访问el-&gt;el_display的65535地址]</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"> src/terminal.c | 26 ++++++++++++++++++++++++--</span><br><span class="line"> 1 file changed, 24 insertions(+), 2 deletions(-)</span><br><span class="line"></span><br><span class="line">diff --git a/src/terminal.c b/src/terminal.c</span><br><span class="line">index 2e62f7b..96bc9b1 100644</span><br><span class="line"><span class="comment">--- a/src/terminal.c</span></span><br><span class="line"><span class="comment">+++ b/src/terminal.c</span></span><br><span class="line">@@ -952,6 +952,16 @@ terminal_get_size(EditLine *el, int *lins, int *cols)</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> #endif</span><br><span class="line"><span class="addition">+    if (*cols &gt; 2000 ) &#123;</span></span><br><span class="line"><span class="addition">+        *cols = 2000;</span></span><br><span class="line"><span class="addition">+    &#125; else if (*cols &lt; 2) &#123;</span></span><br><span class="line"><span class="addition">+        *cols = 80;</span></span><br><span class="line"><span class="addition">+    &#125;</span></span><br><span class="line"><span class="addition">+    if (*lins &gt; 2000) &#123;</span></span><br><span class="line"><span class="addition">+        *lins = 2000;</span></span><br><span class="line"><span class="addition">+    &#125; else if (*lins &lt; 1) &#123;</span></span><br><span class="line"><span class="addition">+        *lins = 24;</span></span><br><span class="line"><span class="addition">+    &#125;</span></span><br><span class="line">     return Val(T_co) != *cols || Val(T_li) != *lins;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line">@@ -966,8 +976,20 @@ terminal_change_size(EditLine *el, int lins, int cols)</span><br><span class="line">     /*</span><br><span class="line">      * Just in case</span><br><span class="line">      */</span><br><span class="line"><span class="deletion">-    Val(T_co) = (cols &lt; 2) ? 80 : cols;</span></span><br><span class="line"><span class="deletion">-    Val(T_li) = (lins &lt; 1) ? 24 : lins;</span></span><br><span class="line"><span class="addition">+    if (cols &lt; 2) &#123;</span></span><br><span class="line"><span class="addition">+        Val(T_co) = 80;</span></span><br><span class="line"><span class="addition">+    &#125; else if (cols &gt; 2000) &#123;</span></span><br><span class="line"><span class="addition">+        Val(T_co) = 2000;</span></span><br><span class="line"><span class="addition">+    &#125; else &#123;</span></span><br><span class="line"><span class="addition">+        Val(T_co) = cols;</span></span><br><span class="line"><span class="addition">+    &#125;</span></span><br><span class="line"><span class="addition">+    if (lins &lt; 1) &#123;</span></span><br><span class="line"><span class="addition">+        Val(T_li) = 24;</span></span><br><span class="line"><span class="addition">+    &#125; else if (lins &gt; 2000) &#123;</span></span><br><span class="line"><span class="addition">+        Val(T_li) = 2000;</span></span><br><span class="line"><span class="addition">+    &#125; else &#123;</span></span><br><span class="line"><span class="addition">+        Val(T_li) = lins;</span></span><br><span class="line"><span class="addition">+    &#125;</span></span><br><span class="line"> </span><br><span class="line">     /* re-make display buffers */</span><br><span class="line">     if (terminal_rebuffer_display(el) == -1)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="github链接地址"><a href="#github链接地址" class="headerlink" title="github链接地址"></a>github链接地址</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/02/24/%E4%BD%BF%E7%94%A8python2%E5%BA%93paramiko-%E6%A8%A1%E6%8B%9Fssh%E7%99%BB%E5%BD%95%E7%BB%88%E7%AB%AF%EF%BC%8C%E6%A6%82%E7%8E%87%E6%80%A7%E5%87%BA%E7%8E%B0coredump/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://blindcat-10835.github.io/2022/02/19/libcrypto%E5%8D%87%E7%BA%A7%E5%AF%BC%E8%87%B4syslog-ng%E5%8D%95%E5%90%91%E8%AE%A4%E8%AF%81%E7%94%B1%E4%BA%8E-unknown-ca-%E9%94%99%E8%AF%AF%E6%97%A0%E6%B3%95%E8%A7%A3%E6%9E%90%E6%8A%A5%E6%96%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -219,17 +356,23 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2022-02-19 17:21:18 / Modified: 17:53:43" itemprop="dateCreated datePublished" datetime="2022-02-19T17:21:18+08:00">2022-02-19</time>
+      <time title="Created: 2022-02-19 17:21:18" itemprop="dateCreated datePublished" datetime="2022-02-19T17:21:18+08:00">2022-02-19</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-02-24 18:38:56" itemprop="dateModified" datetime="2022-02-24T18:38:56+08:00">2022-02-24</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/share/" itemprop="url" rel="index"><span itemprop="name">share</span></a>
+          <a href="/categories/%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/" itemprop="url" rel="index"><span itemprop="name">问题定位</span></a>
         </span>
     </span>
 
@@ -354,7 +497,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-01-26 17:49:25" itemprop="dateModified" datetime="2022-01-26T17:49:25+08:00">2022-01-26</time>
+        <time title="Modified: 2022-02-24 18:36:14" itemprop="dateModified" datetime="2022-02-24T18:36:14+08:00">2022-02-24</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -362,7 +505,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/share/" itemprop="url" rel="index"><span itemprop="name">share</span></a>
+          <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
         </span>
     </span>
 
@@ -490,7 +633,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-01-24 11:05:34" itemprop="dateModified" datetime="2022-01-24T11:05:34+08:00">2022-01-24</time>
+        <time title="Modified: 2022-02-24 18:37:35" itemprop="dateModified" datetime="2022-02-24T18:37:35+08:00">2022-02-24</time>
       </span>
 
   
@@ -604,7 +747,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-01-24 11:05:34" itemprop="dateModified" datetime="2022-01-24T11:05:34+08:00">2022-01-24</time>
+        <time title="Modified: 2022-02-24 18:35:46" itemprop="dateModified" datetime="2022-02-24T18:35:46+08:00">2022-02-24</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -711,13 +854,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">24k</span>
+    <span title="Symbols count total">26k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">22 mins.</span>
+    <span title="Reading time total">24 mins.</span>
   </span>
 </div>
 <div class="busuanzi-count">
