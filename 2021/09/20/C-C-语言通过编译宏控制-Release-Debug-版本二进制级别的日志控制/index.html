@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blindcat-10835.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="摘要本文使用 c&#x2F;cpp 的编译宏特性， 通过编译宏 ## 拼接的技巧，在现有大量存量代码接口不变更的情况下, 完成日志字符串二进制级别的控制. 背景要求 Release 版本在二进制中去除调试日志,而 debug 版本保持不变;代码中已存在大量使用旧日志接口的代码, 要做到存量代码零变更. 实现二进制级别的去除, 不可能使用函数条件判断实现, 只能通过编译宏实现. 现有一日志宏, 通过调用log">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C&#x2F;C++ 语言通过编译宏控制 Release&#x2F;Debug 版本二进制级别的日志控制">
+<meta property="og:url" content="https://blindcat-10835.github.io/2021/09/20/C-C-%E8%AF%AD%E8%A8%80%E9%80%9A%E8%BF%87%E7%BC%96%E8%AF%91%E5%AE%8F%E6%8E%A7%E5%88%B6-Release-Debug-%E7%89%88%E6%9C%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BA%A7%E5%88%AB%E7%9A%84%E6%97%A5%E5%BF%97%E6%8E%A7%E5%88%B6/index.html">
+<meta property="og:site_name" content="BlindCat">
+<meta property="og:description" content="摘要本文使用 c&#x2F;cpp 的编译宏特性， 通过编译宏 ## 拼接的技巧，在现有大量存量代码接口不变更的情况下, 完成日志字符串二进制级别的控制. 背景要求 Release 版本在二进制中去除调试日志,而 debug 版本保持不变;代码中已存在大量使用旧日志接口的代码, 要做到存量代码零变更. 实现二进制级别的去除, 不可能使用函数条件判断实现, 只能通过编译宏实现. 现有一日志宏, 通过调用log">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-09-20T02:48:39.000Z">
+<meta property="article:modified_time" content="2026-02-28T01:23:44.315Z">
+<meta property="article:author" content="BlindCat">
+<meta property="article:tag" content="c">
+<meta property="article:tag" content="cpp">
+<meta property="article:tag" content="宏">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blindcat-10835.github.io/2021/09/20/C-C-%E8%AF%AD%E8%A8%80%E9%80%9A%E8%BF%87%E7%BC%96%E8%AF%91%E5%AE%8F%E6%8E%A7%E5%88%B6-Release-Debug-%E7%89%88%E6%9C%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BA%A7%E5%88%AB%E7%9A%84%E6%97%A5%E5%BF%97%E6%8E%A7%E5%88%B6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://blindcat-10835.github.io/2021/09/20/C-C-%E8%AF%AD%E8%A8%80%E9%80%9A%E8%BF%87%E7%BC%96%E8%AF%91%E5%AE%8F%E6%8E%A7%E5%88%B6-Release-Debug-%E7%89%88%E6%9C%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BA%A7%E5%88%AB%E7%9A%84%E6%97%A5%E5%BF%97%E6%8E%A7%E5%88%B6/","path":"2021/09/20/C-C-语言通过编译宏控制-Release-Debug-版本二进制级别的日志控制/","title":"C/C++ 语言通过编译宏控制 Release/Debug 版本二进制级别的日志控制"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C/C++ 语言通过编译宏控制 Release/Debug 版本二进制级别的日志控制 | BlindCat</title>
+  
+
+
+
+<link rel="dns-prefetch" href="https://hexo-comment-98qvp2zvi-blindcat-10835.vercel.app/">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">BlindCat</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">时间盲目，人类愚蠢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-share"><a href="/share/" rel="section"><i class="fas fa-star fa-fw"></i>Share</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">2.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="nav-number">4.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">BlindCat</p>
+  <div class="site-description" itemprop="description">Tempus edax, homo edacior</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/blindcat-10835" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;blindcat-10835" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:blindcat10835@foxmail.com" title="E-Mail → mailto:blindcat10835@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://blindcat-10835.github.io/2021/09/20/C-C-%E8%AF%AD%E8%A8%80%E9%80%9A%E8%BF%87%E7%BC%96%E8%AF%91%E5%AE%8F%E6%8E%A7%E5%88%B6-Release-Debug-%E7%89%88%E6%9C%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BA%A7%E5%88%AB%E7%9A%84%E6%97%A5%E5%BF%97%E6%8E%A7%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BlindCat">
+      <meta itemprop="description" content="Tempus edax, homo edacior">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BlindCat">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C/C++ 语言通过编译宏控制 Release/Debug 版本二进制级别的日志控制
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-09-20 02:48:39" itemprop="dateCreated datePublished" datetime="2021-09-20T02:48:39+00:00">2021-09-20</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2026-02-28 01:23:44" itemprop="dateModified" datetime="2026-02-28T01:23:44+00:00">2026-02-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/" itemprop="url" rel="index"><span itemprop="name">技术分享</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">评论数: </span>
+  
+    <a title="waline" href="/2021/09/20/C-C-%E8%AF%AD%E8%A8%80%E9%80%9A%E8%BF%87%E7%BC%96%E8%AF%91%E5%AE%8F%E6%8E%A7%E5%88%B6-Release-Debug-%E7%89%88%E6%9C%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BA%A7%E5%88%AB%E7%9A%84%E6%97%A5%E5%BF%97%E6%8E%A7%E5%88%B6/#waline-comments" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" id="/2021/09/20/C-C-%E8%AF%AD%E8%A8%80%E9%80%9A%E8%BF%87%E7%BC%96%E8%AF%91%E5%AE%8F%E6%8E%A7%E5%88%B6-Release-Debug-%E7%89%88%E6%9C%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BA%A7%E5%88%AB%E7%9A%84%E6%97%A5%E5%BF%97%E6%8E%A7%E5%88%B6/" data-xid="/2021/09/20/C-C-%E8%AF%AD%E8%A8%80%E9%80%9A%E8%BF%87%E7%BC%96%E8%AF%91%E5%AE%8F%E6%8E%A7%E5%88%B6-Release-Debug-%E7%89%88%E6%9C%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BA%A7%E5%88%AB%E7%9A%84%E6%97%A5%E5%BF%97%E6%8E%A7%E5%88%B6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>本文使用 c/cpp 的编译宏特性， 通过编译宏 <code>##</code> 拼接的技巧，在现有大量存量代码接口不变更的情况下, 完成日志字符串二进制级别的控制.</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>要求 Release 版本在二进制中去除调试日志,而 debug 版本保持不变;<br>代码中已存在大量使用旧日志接口的代码, 要做到存量代码零变更.</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>二进制级别的去除, 不可能使用函数条件判断实现, 只能通过编译宏实现.</p>
+<p>现有一日志宏, 通过调用<code>log_func</code>输出日志到某个文件。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> debug_log(level, format, arg...)                                       \</span></span><br><span class="line">    <span class="keyword">do</span> &#123;                                                                       \</span><br><span class="line">        log_func((level), __FILE__, __LINE__, format, ##arg);                  \</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用</span></span><br><span class="line">debug_log(DLOG_DEBUG, <span class="string">&quot;int_var=%d&quot;</span>, int_var);</span><br><span class="line">debug_log(DLOG_INFO, <span class="string">&quot;int_var=%d&quot;</span>, int_var);</span><br><span class="line">debug_log(DLOG_ERROR, <span class="string">&quot;int_var=%d&quot;</span>, int_var);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>通过编译宏技巧<code>##</code>, 以及条件编译宏实现日志宏隔离, 和接口的无感知变化.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义不变</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> debug_log(level, format, arg...)                      \</span></span><br><span class="line">    <span class="keyword">do</span>                                                        \</span><br><span class="line">    &#123;                                                         \</span><br><span class="line">        log_func((level), __FILE__, __LINE__, format, ##arg); \</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br><span class="line"><span class="comment">// 新增定义宏</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LOG_MARCO(level, format, arg...)                            \</span></span><br><span class="line">    <span class="keyword">do</span>                                                              \</span><br><span class="line">    &#123;                                                               \</span><br><span class="line">        log_func((level), __FILE__, __LINE__, format, ##arg); \</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RELEASE</span></span><br><span class="line"><span class="comment">// 从level转为宏, 空定义不需要的级别, 再转为level</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">undef</span> debug_log</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> debug_log(level, format, arg...) LOG_##level(format, ##arg)</span></span><br><span class="line"><span class="comment">// 空定义, 实现二进制级别剔除</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LOG_DLOG_DEBUG(format, arg...)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LOG_DLOG_MASS(format, arg...)</span></span><br><span class="line"><span class="comment">// 真正调用日志</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LOG_DLOG_INFO(format, arg...) \</span></span><br><span class="line">    LOG_MARCO(DLOG_INFO, format, ##arg)</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LOG_DLOG_ERROR(format, arg...) \</span></span><br><span class="line">    LOG_MARCO(DLOG_ERROR, format, ##arg)</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用处不变</span></span><br><span class="line">debug_log(DEBUG, <span class="string">&quot;int_var=%d&quot;</span>, int_var);</span><br><span class="line">debug_log(INFO, <span class="string">&quot;int_var=%d&quot;</span>, int_var);</span><br><span class="line">debug_log(ERROR, <span class="string">&quot;int_var=%d&quot;</span>, int_var);</span><br></pre></td></tr></table></figure>
+
+<p>其他的部分， 无非是构建脚本，<code>cmake</code> 和编译宏之间的控制配合，不算复杂，按下不表。</p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>二进制级别的验证，可以使用二进制查看器， 或者gnu命令<code>strings execute_bin|grep &quot;some debug log&quot;</code></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Nimeux/archive/2010/09/07/1820809.html">C语言宏定义中#与##的用法</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c</a>
+              <a href="/tags/cpp/" rel="tag"># cpp</a>
+              <a href="/tags/%E5%AE%8F/" rel="tag"># 宏</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/14/%E9%B1%BC/" rel="prev" title="鱼">
+                  <i class="fa fa-chevron-left"></i> 鱼
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="next" title="设计模式学习笔记">
+                  设计模式学习笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BlindCat</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">43k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">39 mins.</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":null,"enable":true,"serverURL":"https://hexo-comment-98qvp2zvi-blindcat-10835.vercel.app/","placeholder":"Just go go","avatar":"robohash","pageSize":10,"visitor":false,"comment_count":true,"requiredMeta":[],"copyright":true,"allowUploadImage":true,"meta":["nick","mail","link"],"qiniuDebug":false,"qiniuDomain":null,"qiniuTokenUrl":null,"requiredFields":[],"el":"#waline-comments","libUrl":"https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js","path":"/2021/09/20/C-C-%E8%AF%AD%E8%A8%80%E9%80%9A%E8%BF%87%E7%BC%96%E8%AF%91%E5%AE%8F%E6%8E%A7%E5%88%B6-Release-Debug-%E7%89%88%E6%9C%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BA%A7%E5%88%AB%E7%9A%84%E6%97%A5%E5%BF%97%E6%8E%A7%E5%88%B6/","login":"","dark":"auto","avatarCDN":"https://seccdn.libravatar.org/avatar/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  if(!CONFIG.waline.allowUploadImage) {
+    CONFIG.waline.uploadImage = false;
+  }
+  else if(CONFIG.waline.qiniuDomain && CONFIG.waline.qiniuTokenUrl) {
+    CONFIG.waline.uploadImage = qiniuUploadImage;
+  }
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => {
+    new Waline(CONFIG.waline);
+  });
+});
+</script>
+
+</body>
+</html>

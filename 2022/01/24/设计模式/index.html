@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blindcat-10835.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="基于  书: Design Patterns in Modern C++ 代码: Apress&#x2F;design-patterns-in-modern-cpp: Source code for ‘Design Patterns in Modern C++’ by Dmitri Nesteruk 引言 |《Design Patterns in Modern C++》 | ZenLianhttps:&#x2F;&#x2F;z">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式学习笔记">
+<meta property="og:url" content="https://blindcat-10835.github.io/2022/01/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="BlindCat">
+<meta property="og:description" content="基于  书: Design Patterns in Modern C++ 代码: Apress&#x2F;design-patterns-in-modern-cpp: Source code for ‘Design Patterns in Modern C++’ by Dmitri Nesteruk 引言 |《Design Patterns in Modern C++》 | ZenLianhttps:&#x2F;&#x2F;z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-24T14:43:46.000Z">
+<meta property="article:modified_time" content="2026-02-28T01:23:44.315Z">
+<meta property="article:author" content="BlindCat">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blindcat-10835.github.io/2022/01/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://blindcat-10835.github.io/2022/01/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/","path":"2022/01/24/设计模式/","title":"设计模式学习笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>设计模式学习笔记 | BlindCat</title>
+  
+
+
+
+<link rel="dns-prefetch" href="https://hexo-comment-98qvp2zvi-blindcat-10835.vercel.app/">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">BlindCat</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">时间盲目，人类愚蠢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-share"><a href="/share/" rel="section"><i class="fas fa-star fa-fw"></i>Share</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c1"><span class="nav-number">2.</span> <span class="nav-text">c1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ref"><span class="nav-number">2.1.</span> <span class="nav-text">ref</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">2.2.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c2-%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F-Builder"><span class="nav-number">3.</span> <span class="nav-text">c2 建造者模式 Builder</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ref-1"><span class="nav-number">3.1.</span> <span class="nav-text">ref</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%96%91%E9%97%AE-amp-%E5%B0%8F%E7%BB%93"><span class="nav-number">3.2.</span> <span class="nav-text">疑问&amp;小结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.3.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c3-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8FFactories"><span class="nav-number">4.</span> <span class="nav-text">c3 工厂模式Factories</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ref-2"><span class="nav-number">4.1.</span> <span class="nav-text">ref</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%96%91%E9%97%AE-amp-%E5%B0%8F%E7%BB%93-1"><span class="nav-number">4.2.</span> <span class="nav-text">疑问&amp;小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c4-%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8FPrototype"><span class="nav-number">5.</span> <span class="nav-text">c4 原型模式Prototype</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ref-3"><span class="nav-number">5.1.</span> <span class="nav-text">ref</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">6.</span> <span class="nav-text">reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">BlindCat</p>
+  <div class="site-description" itemprop="description">Tempus edax, homo edacior</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/blindcat-10835" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;blindcat-10835" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:blindcat10835@foxmail.com" title="E-Mail → mailto:blindcat10835@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://blindcat-10835.github.io/2022/01/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BlindCat">
+      <meta itemprop="description" content="Tempus edax, homo edacior">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BlindCat">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          设计模式学习笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-01-24 14:43:46" itemprop="dateCreated datePublished" datetime="2022-01-24T14:43:46+00:00">2022-01-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2026-02-28 01:23:44" itemprop="dateModified" datetime="2026-02-28T01:23:44+00:00">2026-02-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">评论数: </span>
+  
+    <a title="waline" href="/2022/01/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/#waline-comments" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" id="/2022/01/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" data-xid="/2022/01/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>4.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>基于</p>
+<ul>
+<li>书: <em>Design Patterns in Modern C++</em></li>
+<li>代码: <a target="_blank" rel="noopener" href="https://github.com/Apress/design-patterns-in-modern-cpp">Apress/design-patterns-in-modern-cpp: Source code for ‘Design Patterns in Modern C++’ by Dmitri Nesteruk</a></li>
+<li>引言 |《Design Patterns in Modern C++》 | ZenLian<br><a target="_blank" rel="noopener" href="https://zenlian.github.io/posts/design-pattern-in-modern-cpp/introduction/">https://zenlian.github.io/posts/design-pattern-in-modern-cpp/introduction/</a></li>
+</ul>
+<h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>带着问题来学</p>
+<ul>
+<li>解决什么问题</li>
+<li>如何解决(越具体越好)</li>
+<li>学到了什么(语法, 设计, 改造)</li>
+</ul>
+<h2 id="c1"><a href="#c1" class="headerlink" title="c1"></a>c1</h2><h3 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h3><p>引言 |《Design Patterns in Modern C++》 | ZenLian<br><a target="_blank" rel="noopener" href="https://zenlian.github.io/posts/design-pattern-in-modern-cpp/introduction/">https://zenlian.github.io/posts/design-pattern-in-modern-cpp/introduction/</a></p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>学习了几个原则<blockquote>
+<p>SOLID 是以下 5 大设计原则的首字母缩写：<br>单一职责原则（Single Responsibility Principle，SRP）<br>开闭原则（Open-Closed Principle，OCP）<br>里氏替换原则（Liskov Substitution Principle，LSP）<br>接口隔离原则（Interface Segregation Principle，ISP）<br>依赖倒置原则（Dependency Inversion Principle，DIP）</p>
+</blockquote>
+</li>
+<li>发现变化, 抽离不变; 实际上和我写代码的思路一样, 只是人家能够表达出来, 总结出来, 还有大量的经验作为栗子; 给我时间我我也一样能总结出来, 不过不会这么完整, 也不会则这么好</li>
+<li>使用cpp的特性, 能够简化代码, 实现这些原则</li>
+</ul>
+<h2 id="c2-建造者模式-Builder"><a href="#c2-建造者模式-Builder" class="headerlink" title="c2 建造者模式 Builder"></a>c2 建造者模式 Builder</h2><h3 id="ref-1"><a href="#ref-1" class="headerlink" title="ref"></a>ref</h3><ul>
+<li>C++ STL vector添加元素（push_back()和emplace_back()）详解<br><a target="_blank" rel="noopener" href="http://c.biancheng.net/view/6826.html">http://c.biancheng.net/view/6826.html</a></li>
+<li>c++11特性之initializer_list_一蓑烟雨任平生 也无风雨也无晴-CSDN博客<br><a target="_blank" rel="noopener" href="https://dabaojian.blog.csdn.net/article/details/49622871?spm=1001.2101.3001.6661.1&amp;utm_medium=distribute.pc_relevant_t0.none-task-blog-2~default~CTRLIST~Rate-1.pc_relevant_default&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2~default~CTRLIST~Rate-1.pc_relevant_default&amp;utm_relevant_index=1">https://dabaojian.blog.csdn.net/article/details/49622871?spm=1001.2101.3001.6661.1&amp;utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1.pc_relevant_default&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1.pc_relevant_default&amp;utm_relevant_index=1</a></li>
+</ul>
+<h3 id="疑问-amp-小结"><a href="#疑问-amp-小结" class="headerlink" title="疑问&amp;小结"></a>疑问&amp;小结</h3><p>提问:<br><strong>以下的小结如何实现/使用/目的 ?</strong></p>
+<ul>
+<li><p>疑问:  为什么emplace_back 类型不匹配?</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">pair</span>&lt;<span class="built_in">string</span>, <span class="built_in">string</span>&gt;&gt; attributes;</span><br><span class="line">attributes.push_back(&#123;<span class="string">&quot;src&quot;</span>, <span class="string">&quot;http://pokemon.com/pikachu.png&quot;</span>&#125;); <span class="comment">// OK</span></span><br><span class="line">attributes.emplace_back(&#123;<span class="string">&quot;src&quot;</span>, <span class="string">&quot;http://pokemon.com/pikachu.png&quot;</span>&#125;); <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>学习了建造者模式写html</p>
+</li>
+<li><p>使用builder 去创造 obj</p>
+</li>
+<li><p>使用protect保护构造函数, 禁止手动创建obj</p>
+</li>
+<li><p>使用operator() 重载类型转换</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">HtmlBuilder</span> &#123;</span></span><br><span class="line">    HtmlElement root;</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">HtmlElement</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> root;  </span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>流式调用, 早就知道并运用</p>
+</li>
+<li><p>使用<code>using self = PersonAddressBuilder;</code>简化类内部代码(免得写得好累)</p>
+</li>
+<li><p>emplace_back和push_back</p>
+</li>
+<li></li>
+<li><p>使用<code>unique_ptr&lt;HtmlBuilder&gt;</code> 通过移动构造转移所有权 <code>make_unique&lt;HtmlBuilder&gt;</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="built_in">unique_ptr</span>&lt;HtmlBuilder&gt; <span class="title">build</span><span class="params">(<span class="built_in">string</span> root_name)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> make_unique&lt;HtmlBuilder&gt;(root_name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>explicit 关键字</p>
+</li>
+<li><p>initializer_list 模板使用</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">P</span> :</span> Tag</span><br><span class="line">&#123;</span><br><span class="line"><span class="function"><span class="keyword">explicit</span> <span class="title">P</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; text)</span></span></span><br><span class="line"><span class="function">    : <span class="title">Tag</span><span class="params">(<span class="string">&quot;p&quot;</span>, text)</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">P</span><span class="params">(<span class="built_in">initializer_list</span>&lt;Tag&gt; children)</span></span></span><br><span class="line"><span class="function">    : <span class="title">Tag</span><span class="params">(<span class="string">&quot;p&quot;</span>, chidren)</span> </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Tag</span> &#123;</span></span><br><span class="line">  <span class="built_in">string</span> name;</span><br><span class="line">  <span class="built_in">string</span> text;</span><br><span class="line">  <span class="built_in">vector</span>&lt;Tag&gt; children;</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="built_in">pair</span>&lt;<span class="built_in">string</span>, <span class="built_in">string</span>&gt;&gt; attributes;</span><br><span class="line">  <span class="keyword">friend</span> ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp; os, <span class="keyword">const</span> Tag&amp; tag) &#123;</span><br><span class="line">    os &lt;&lt; <span class="string">&quot;&lt;&quot;</span> &lt;&lt; tag.name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp;&amp; i : tag.attributes) &#123;</span><br><span class="line">      os &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; i.first &lt;&lt; <span class="string">&#x27;=&#x27;</span> &lt;&lt; i.second;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    os &lt;&lt; <span class="string">&quot;&gt;&quot;</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; tag.text &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp;&amp; i : tag.children) &#123;</span><br><span class="line">      os &lt;&lt; i;</span><br><span class="line">    &#125;</span><br><span class="line">    os &lt;&lt; <span class="string">&quot;&lt;/&quot;</span> &lt;&lt; tag.name &lt;&lt; <span class="string">&quot;&gt;&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> os;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">protected</span>:</span><br><span class="line">  Tag(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; name, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; text)</span><br><span class="line">      : name&#123;name&#125;, text&#123;text&#125; &#123;&#125;</span><br><span class="line"></span><br><span class="line">  Tag(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; name, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Tag&gt;&amp; children)</span><br><span class="line">      : name&#123;name&#125;, children&#123;children&#125; &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">P</span> :</span> Tag &#123;</span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">P</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; text)</span> : <span class="title">Tag</span><span class="params">(<span class="string">&quot;p&quot;</span>, text)</span> </span>&#123;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">P</span><span class="params">(<span class="built_in">initializer_list</span>&lt;Tag&gt; children)</span> : <span class="title">Tag</span><span class="params">(<span class="string">&quot;p&quot;</span>, children)</span> </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">IMG</span> :</span> Tag &#123;</span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">IMG</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; url)</span> : <span class="title">Tag</span><span class="params">(<span class="string">&quot;img&quot;</span>, <span class="string">&quot;&quot;</span>)</span> </span>&#123;</span><br><span class="line">    attributes.push_back(&#123;<span class="string">&quot;src&quot;</span>, url&#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; P&#123;IMG&#123;<span class="string">&quot;http://pokemon.com/pikachu.png&quot;</span>&#125;&#125; &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="c3-工厂模式Factories"><a href="#c3-工厂模式Factories" class="headerlink" title="c3 工厂模式Factories"></a>c3 工厂模式Factories</h2><h3 id="ref-2"><a href="#ref-2" class="headerlink" title="ref"></a>ref</h3><ul>
+<li>C++各类设计模式及实现详解 - 知乎<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/431714886">https://zhuanlan.zhihu.com/p/431714886</a></li>
+<li>工厂模式 |《Design Patterns in Modern C++》 | ZenLian<br><a target="_blank" rel="noopener" href="https://zenlian.github.io/posts/design-pattern-in-modern-cpp/factories/">https://zenlian.github.io/posts/design-pattern-in-modern-cpp/factories/</a></li>
+</ul>
+<h3 id="疑问-amp-小结-1"><a href="#疑问-amp-小结-1" class="headerlink" title="疑问&amp;小结"></a>疑问&amp;小结</h3><ul>
+<li>工厂模式</li>
+<li>内部工厂Inner Factory<ul>
+<li>与上面的区别是,cpp用friend, 而没有friend的只能用inner</li>
+</ul>
+</li>
+<li><code>virtual SingleCore* CreateSingleCore() = 0;</code> 纯虚函数, 无法实例化, 只能作为抽象工厂</li>
+<li>工厂和构造函数的区别/好处<ul>
+<li>可以拒绝, 可以返回nullptr</li>
+<li>可以更名,</li>
+<li>可以聚合一类对象的创造</li>
+</ul>
+</li>
+<li>与builder的区别, 工厂一次性地创建一个对象, builder分段地创建<blockquote>
+<p>Factory is different from Builder in that, with a Factory, you typically create an object in one go, whereas with Builder, you construct the object piecewise by providing information in parts.</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="c4-原型模式Prototype"><a href="#c4-原型模式Prototype" class="headerlink" title="c4 原型模式Prototype"></a>c4 原型模式Prototype</h2><h3 id="ref-3"><a href="#ref-3" class="headerlink" title="ref"></a>ref</h3><p>原型模式 |《Design Patterns in Modern C++》 | ZenLian<br><a target="_blank" rel="noopener" href="https://zenlian.github.io/posts/design-pattern-in-modern-cpp/prototype/">https://zenlian.github.io/posts/design-pattern-in-modern-cpp/prototype/</a></p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/design-pattern/design-pattern-intro.html">设计模式</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 设计模式</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/20/C-C-%E8%AF%AD%E8%A8%80%E9%80%9A%E8%BF%87%E7%BC%96%E8%AF%91%E5%AE%8F%E6%8E%A7%E5%88%B6-Release-Debug-%E7%89%88%E6%9C%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BA%A7%E5%88%AB%E7%9A%84%E6%97%A5%E5%BF%97%E6%8E%A7%E5%88%B6/" rel="prev" title="C/C++ 语言通过编译宏控制 Release/Debug 版本二进制级别的日志控制">
+                  <i class="fa fa-chevron-left"></i> C/C++ 语言通过编译宏控制 Release/Debug 版本二进制级别的日志控制
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/19/libcrypto%E5%8D%87%E7%BA%A7%E5%AF%BC%E8%87%B4syslog-ng%E5%8D%95%E5%90%91%E8%AE%A4%E8%AF%81%E7%94%B1%E4%BA%8E-unknown-ca-%E9%94%99%E8%AF%AF%E6%97%A0%E6%B3%95%E8%A7%A3%E6%9E%90%E6%8A%A5%E6%96%87/" rel="next" title="libcrypto升级导致syslog-ng单向认证由于'unknown ca'错误无法解析报文">
+                  libcrypto升级导致syslog-ng单向认证由于'unknown ca'错误无法解析报文 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BlindCat</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">43k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">39 mins.</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":null,"enable":true,"serverURL":"https://hexo-comment-98qvp2zvi-blindcat-10835.vercel.app/","placeholder":"Just go go","avatar":"robohash","pageSize":10,"visitor":false,"comment_count":true,"requiredMeta":[],"copyright":true,"allowUploadImage":true,"meta":["nick","mail","link"],"qiniuDebug":false,"qiniuDomain":null,"qiniuTokenUrl":null,"requiredFields":[],"el":"#waline-comments","libUrl":"https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js","path":"/2022/01/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/","login":"","dark":"auto","avatarCDN":"https://seccdn.libravatar.org/avatar/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  if(!CONFIG.waline.allowUploadImage) {
+    CONFIG.waline.uploadImage = false;
+  }
+  else if(CONFIG.waline.qiniuDomain && CONFIG.waline.qiniuTokenUrl) {
+    CONFIG.waline.uploadImage = qiniuUploadImage;
+  }
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => {
+    new Waline(CONFIG.waline);
+  });
+});
+</script>
+
+</body>
+</html>

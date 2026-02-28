@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blindcat-10835.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="问题描述构建系统使用python代码作为调度, 其中打包时系统挂死. 问题解决 查看线程状态  123456# ps -ef|grep python3root     22459 30393  0 15:13 ?        00:00:00 python3 packet_ci_board.py 2488hv6root     22805 22459  0 15:15 ?        00:0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次python线程挂死问题定位">
+<meta property="og:url" content="https://blindcat-10835.github.io/2022/03/03/%E8%AE%B0%E4%B8%80%E6%AC%A1python%E7%BA%BF%E7%A8%8B%E6%8C%82%E6%AD%BB%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/index.html">
+<meta property="og:site_name" content="BlindCat">
+<meta property="og:description" content="问题描述构建系统使用python代码作为调度, 其中打包时系统挂死. 问题解决 查看线程状态  123456# ps -ef|grep python3root     22459 30393  0 15:13 ?        00:00:00 python3 packet_ci_board.py 2488hv6root     22805 22459  0 15:15 ?        00:0">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-03T19:41:28.000Z">
+<meta property="article:modified_time" content="2026-02-28T01:23:44.315Z">
+<meta property="article:author" content="BlindCat">
+<meta property="article:tag" content="gdb">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blindcat-10835.github.io/2022/03/03/%E8%AE%B0%E4%B8%80%E6%AC%A1python%E7%BA%BF%E7%A8%8B%E6%8C%82%E6%AD%BB%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://blindcat-10835.github.io/2022/03/03/%E8%AE%B0%E4%B8%80%E6%AC%A1python%E7%BA%BF%E7%A8%8B%E6%8C%82%E6%AD%BB%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/","path":"2022/03/03/记一次python线程挂死问题定位/","title":"记一次python线程挂死问题定位"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>记一次python线程挂死问题定位 | BlindCat</title>
+  
+
+
+
+<link rel="dns-prefetch" href="https://hexo-comment-98qvp2zvi-blindcat-10835.vercel.app/">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">BlindCat</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">时间盲目，人类愚蠢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-share"><a href="/share/" rel="section"><i class="fas fa-star fa-fw"></i>Share</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="nav-number">2.</span> <span class="nav-text">问题解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E6%80%9D"><span class="nav-number">3.</span> <span class="nav-text">反思</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">BlindCat</p>
+  <div class="site-description" itemprop="description">Tempus edax, homo edacior</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/blindcat-10835" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;blindcat-10835" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:blindcat10835@foxmail.com" title="E-Mail → mailto:blindcat10835@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://blindcat-10835.github.io/2022/03/03/%E8%AE%B0%E4%B8%80%E6%AC%A1python%E7%BA%BF%E7%A8%8B%E6%8C%82%E6%AD%BB%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BlindCat">
+      <meta itemprop="description" content="Tempus edax, homo edacior">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BlindCat">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          记一次python线程挂死问题定位
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-03-03 19:41:28" itemprop="dateCreated datePublished" datetime="2022-03-03T19:41:28+00:00">2022-03-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2026-02-28 01:23:44" itemprop="dateModified" datetime="2026-02-28T01:23:44+00:00">2026-02-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">工作笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">评论数: </span>
+  
+    <a title="waline" href="/2022/03/03/%E8%AE%B0%E4%B8%80%E6%AC%A1python%E7%BA%BF%E7%A8%8B%E6%8C%82%E6%AD%BB%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/#waline-comments" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" id="/2022/03/03/%E8%AE%B0%E4%B8%80%E6%AC%A1python%E7%BA%BF%E7%A8%8B%E6%8C%82%E6%AD%BB%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/" data-xid="/2022/03/03/%E8%AE%B0%E4%B8%80%E6%AC%A1python%E7%BA%BF%E7%A8%8B%E6%8C%82%E6%AD%BB%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>14k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>13 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>构建系统使用python代码作为调度, 其中打包时系统挂死.</p>
+<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><ol>
+<li><p>查看线程状态</p>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ps -ef|grep python3</span></span><br><span class="line">root     22459 30393  0 15:13 ?        00:00:00 python3 packet_ci_board.py 2488hv6</span><br><span class="line">root     22805 22459  0 15:15 ?        00:00:01 python3 -B packet.py -b 2488hv6</span><br><span class="line">root     22821 22805  0 15:15 ?        00:00:00 python3 -B packet.py -b 2488hv6</span><br><span class="line">root     30393 30392  0 14:59 ?        00:00:00 python3 build_one_click.py --board 2488hv6 --sign</span><br><span class="line">root     30822 29995  0 16:23 pts/3    00:00:00 grep --color=auto python3</span><br></pre></td></tr></table></figure>
+
+<p> 可见线程调用关系<code>30392 -&gt; 30393 -&gt; 22459 -&gt; 22805 -&gt;22821</code>, 挂死线程为22821</p>
+</li>
+<li><p>尝试调试线程<br>参考这篇博客[^1],检查环境是否有<code>gdb python-dbg</code>, 前者存在, 后者不存在;</p>
+</li>
+<li><p>安装<code>python-dbg</code></p>
+<p> 由于线上环境为<code>suse12 sp5</code>, 无法通过软件源安装<code>python-dbg</code>. 参考博客[^1]提示, 实际上就是将一个源码文件拷贝到环境上而已.</p>
+<ul>
+<li><p>软件检查环境python版本, 为<code>3.8.5</code></p>
+</li>
+<li><p>获得<code>3.8.5</code>的源文件<code>libpython.py</code>[^2],通过文本复制方式上传到环境.</p>
+</li>
+<li><p>拷贝到python的安装路径,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># which python3</span></span><br><span class="line">/opt/buildtools/python-3.8.5/bin/python3</span><br><span class="line"></span><br><span class="line"><span class="comment"># mkdir -p /usr/share/gdb/auto-load/opt/buildtools/python-3.8.5/bin/</span></span><br><span class="line"><span class="comment"># cp libpython.py /usr/share/gdb/auto-load/opt/buildtools/python-3.8.5/bin/python3.8-gdb.py</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>使用gdb调试<br>开始调试</p>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># gdb python3 22821 </span></span><br><span class="line">(gdb) </span><br><span class="line"><span class="comment"># 由上述步骤后,应可在gdb中使用`py-*`相关命令, 否则, 可尝试在gdb中`source libpython.py`手动导入以下命令</span></span><br><span class="line">(gdb) <span class="built_in">source</span> libpython.py</span><br><span class="line"><span class="comment"># 输入py后,使用tab可自动补全</span></span><br><span class="line">(gdb) py</span><br><span class="line">py-bt               py-down             py-locals           py-up               python-interactive</span><br><span class="line">py-bt-full          py-list             py-print            python</span><br><span class="line"><span class="comment"># 避免破坏线程, 可以先dump, 再执行gdb python3 ./core.22821调试dump文件</span></span><br><span class="line">(gdb) generate-core-file </span><br><span class="line"><span class="comment"># 查看调用栈</span></span><br><span class="line">(gdb) bt</span><br><span class="line"><span class="comment">#0  0x00007f8458abb5f4 in do_futex_wait.constprop () from /lib64/libpthread.so.0</span></span><br><span class="line"><span class="comment">#1  0x00007f8458abb6f8 in __new_sem_wait_slow.constprop.0 () from /lib64/libpthread.so.0</span></span><br><span class="line"><span class="comment">#2  0x00007f8454b7f388 in semlock_acquire (self=0x7f84575bd5b0, args=&lt;optimized out&gt;, kwds=&lt;optimized out&gt;)</span></span><br><span class="line">    at /tmp/python-3.8.5/Python-3.8.5/Modules/_multiprocessing/semaphore.c:319</span><br><span class="line"><span class="comment">#3  0x000000000044018a in cfunction_call_varargs (kwargs=&lt;optimized out&gt;, args=&lt;optimized out&gt;, </span></span><br><span class="line">    func=&lt;built-in method acquire of _multiprocessing.SemLock object at remote 0x7f84575bd5b0&gt;)</span><br><span class="line">    at Objects/call.c:742</span><br><span class="line"><span class="comment">#4  PyCFunction_Call (</span></span><br><span class="line">    func=&lt;built-in method acquire of _multiprocessing.SemLock object at remote 0x7f84575bd5b0&gt;, </span><br><span class="line">    args=&lt;optimized out&gt;, kwargs=&lt;optimized out&gt;) at Objects/call.c:772</span><br><span class="line"><span class="comment">#5  0x000000000043d156 in _PyObject_MakeTpCall (</span></span><br><span class="line">    callable=callable@entry=&lt;built-in method acquire of _multiprocessing.SemLock object at remote 0x7f84575bd5b0&gt;, args=args@entry=0x21978d0, nargs=&lt;optimized out&gt;, keywords=keywords@entry=0x0) at Objects/call.c:159</span><br><span class="line"><span class="comment">#6  0x000000000042dbc2 in _PyObject_Vectorcall (kwnames=&lt;optimized out&gt;, nargsf=&lt;optimized out&gt;, </span></span><br><span class="line">    args=&lt;optimized out&gt;, callable=&lt;optimized out&gt;) at ./Include/cpython/abstract.h:125</span><br><span class="line"><span class="comment">#7  call_function (kwnames=0x0, oparg=&lt;optimized out&gt;, pp_stack=&lt;synthetic pointer&gt;, tstate=0x1ebc3c0)</span></span><br><span class="line">    at Python/ceval.c:4963</span><br><span class="line"><span class="comment">#8  _PyEval_EvalFrameDefault (f=&lt;optimized out&gt;, throwflag=&lt;optimized out&gt;) at Python/ceval.c:3469</span></span><br><span class="line"><span class="comment">#9  0x00000000004259b8 in function_code_fastcall (co=&lt;optimized out&gt;, args=&lt;optimized out&gt;, nargs=1, </span></span><br><span class="line">    globals=&lt;optimized out&gt;) at Objects/call.c:283</span><br><span class="line"><span class="comment">#10 0x000000000043fd7c in PyVectorcall_Call (callable=&lt;function at remote 0x7f84575bb940&gt;, </span></span><br><span class="line">    tuple=&lt;optimized out&gt;, kwargs=&lt;optimized out&gt;) at Objects/call.c:199</span><br><span class="line"><span class="comment">#11 0x000000000042a749 in do_call_core (kwdict=&#123;&#125;, </span></span><br><span class="line">    callargs=(&lt;Lock(_semlock=&lt;_multiprocessing.SemLock at remote 0x7f84575bd5b0&gt;, acquire=&lt;built-in method acquire of _multiprocessing.SemLock object at remote 0x7f84575bd5b0&gt;, release=&lt;built-in method release of _multiprocessing.SemLock object at remote 0x7f84575bd5b0&gt;) at remote 0x7f84576d09d0&gt;,), </span><br><span class="line">    func=&lt;<span class="keyword">function</span> at remote 0x7f84575bb940&gt;, tstate=0x1ebc3c0) at Python/ceval.c:5010</span><br><span class="line"><span class="comment">#12 _PyEval_EvalFrameDefault (f=&lt;optimized out&gt;, throwflag=&lt;optimized out&gt;) at Python/ceval.c:3559</span></span><br><span class="line"><span class="comment">#13 0x00000000004259b8 in function_code_fastcall (co=&lt;optimized out&gt;, args=&lt;optimized out&gt;, nargs=1, </span></span><br><span class="line">    globals=&lt;optimized out&gt;) at Objects/call.c:283</span><br><span class="line"><span class="comment">#14 0x0000000000428733 in _PyObject_Vectorcall (kwnames=&lt;optimized out&gt;, nargsf=&lt;optimized out&gt;, </span></span><br><span class="line">    args=&lt;optimized out&gt;, callable=&lt;optimized out&gt;) at ./Include/cpython/abstract.h:127</span><br><span class="line"><span class="comment">#15 trace_call_function (kwnames=&lt;optimized out&gt;, nargs=&lt;optimized out&gt;, args=&lt;optimized out&gt;, </span></span><br><span class="line">    func=&lt;optimized out&gt;, tstate=&lt;optimized out&gt;) at Python/ceval.c:4944</span><br><span class="line"><span class="comment">#16 call_function (kwnames=0x0, oparg=&lt;optimized out&gt;, pp_stack=&lt;synthetic pointer&gt;, tstate=0x1ebc3c0)</span></span><br><span class="line">    at Python/ceval.c:4960</span><br><span class="line"><span class="comment">#17 _PyEval_EvalFrameDefault (f=&lt;optimized out&gt;, throwflag=&lt;optimized out&gt;) at Python/ceval.c:3486</span></span><br><span class="line"><span class="comment">#18 0x00000000004f04dd in PyEval_EvalFrameEx (throwflag=0, </span></span><br><span class="line">    f=Frame 0x2169550, <span class="keyword">for</span> file /opt/buildtools/python-3.8.5/lib/python3.8/multiprocessing/process.py, line 571, <span class="keyword">in</span> _bootstrap (self=&lt;Process(_identity=(13,), _config=&#123;<span class="string">&#x27;authkey&#x27;</span>: &lt;AuthenticationString at remote 0x7f84576c9dc0&gt;, <span class="string">&#x27;semprefix&#x27;</span>: <span class="string">&#x27;/mp&#x27;</span>&#125;, _parent_pid=22805, _parent_name=<span class="string">&#x27;MainProcess&#x27;</span>, _popen=None, _closed=False, _target=&lt;<span class="keyword">function</span> at remote 0x7f84575bb940&gt;, _args=(&lt;Lock(_semlock=&lt;_multiprocessing.SemLock at remote 0x7f84575bd5b0&gt;, acquire=&lt;built-in method acquire of _multiprocessing.SemLock object at remote 0x7f84575bd5b0&gt;, release=&lt;built-in method release of _multiprocessing.SemLock object at remote 0x7f84575bd5b0&gt;) at remote 0x7f84576d09d0&gt;,), _kwargs=&#123;&#125;, _name=<span class="string">&#x27;Process-13&#x27;</span>) at remote 0x7f845757b250&gt;, parent_sentinel=30, util=&lt;module at remote 0x7f84575e7540&gt;, context=&lt;module at remote 0x7f84577a2a40&gt;)) at Python/ceval.c:741</span><br><span class="line"><span class="comment">#19 _PyEval_EvalCodeWithName (_co=&lt;code at remote 0x7f84576d6920&gt;, globals=&lt;optimized out&gt;, </span></span><br><span class="line">    locals=locals@entry=0x0, args=&lt;optimized out&gt;, argcount=1, kwnames=0x7f845756d6b8, </span><br><span class="line">--Type &lt;RET&gt; <span class="keyword">for</span> more, q to quit, c to <span class="built_in">continue</span> without paging--q</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看python的调用栈</span></span><br><span class="line">(gdb) py-bt</span><br><span class="line">Traceback (most recent call first):</span><br><span class="line">  &lt;built-in method acquire of _multiprocessing.SemLock object at remote 0x7f84575bd5b0&gt;</span><br><span class="line">  File <span class="string">&quot;packet.py&quot;</span>, line 3533, <span class="keyword">in</span> create_tosupport_pkg</span><br><span class="line">  File <span class="string">&quot;/opt/buildtools/python-3.8.5/lib/python3.8/multiprocessing/process.py&quot;</span>, line 108, <span class="keyword">in</span> run</span><br><span class="line">    self._target(*self._args, **self._kwargs)</span><br><span class="line">  File <span class="string">&quot;/opt/buildtools/python-3.8.5/lib/python3.8/multiprocessing/process.py&quot;</span>, line 571, <span class="keyword">in</span> _bootstrap</span><br><span class="line">  File <span class="string">&quot;/opt/buildtools/python-3.8.5/lib/python3.8/multiprocessing/popen_fork.py&quot;</span>, line 75, <span class="keyword">in</span> _launch</span><br><span class="line">    code = process_obj._bootstrap(parent_sentinel=child_r)</span><br><span class="line">  File <span class="string">&quot;/opt/buildtools/python-3.8.5/lib/python3.8/multiprocessing/popen_fork.py&quot;</span>, line 19, <span class="keyword">in</span> __init__</span><br><span class="line">    self._launch(process_obj)</span><br><span class="line">  File <span class="string">&quot;/opt/buildtools/python-3.8.5/lib/python3.8/multiprocessing/context.py&quot;</span>, line 277, <span class="keyword">in</span> _Popen</span><br><span class="line">    <span class="built_in">return</span> Popen(process_obj)</span><br><span class="line">  File <span class="string">&quot;/opt/buildtools/python-3.8.5/lib/python3.8/multiprocessing/context.py&quot;</span>, line 224, <span class="keyword">in</span> _Popen</span><br><span class="line">    <span class="built_in">return</span> _default_context.get_context().Process._Popen(process_obj)</span><br><span class="line">  File <span class="string">&quot;/opt/buildtools/python-3.8.5/lib/python3.8/multiprocessing/process.py&quot;</span>, line 633, <span class="keyword">in</span> start</span><br><span class="line">  File <span class="string">&quot;packet.py&quot;</span>, line 3706, <span class="keyword">in</span> create_pkg</span><br><span class="line">  File <span class="string">&quot;packet.py&quot;</span>, line 3475, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">(gdb) py-up </span><br><span class="line"><span class="comment">#8 Frame 0x21976c0, for file packet.py, line 3533, in create_tosupport_pkg (lock=&lt;Lock(_semlock=&lt;_multiprocessing.SemLock at remote 0x7f84575bd5b0&gt;, acquire=&lt;built-in method acquire of _multiprocessing.SemLock object at remote 0x7f84575bd5b0&gt;, release=&lt;built-in method release of _multiprocessing.SemLock object at remote 0x7f84575bd5b0&gt;) at remote 0x7f84576d09d0&gt;, logger=&lt;Logger(filters=[], name=&#x27;create_tosupport_pkg&#x27;, level=10, parent=&lt;RootLogger(filters=[], name=&#x27;root&#x27;, level=30, parent=None, propagate=True, handlers=[], disabled=False, _cache=&#123;&#125;) at remote 0x7f845771dd00&gt;, propagate=True, handlers=[&lt;FileHandler(baseFilename=&#x27;/usr1/jenkins/workspace/Version_pipeline_compile_iBMC/V2R2_trunk/temp/log/packet_log/create_tosupport_pkg.log&#x27;, mode=&#x27;a&#x27;, encoding=None, delay=False, filters=[], _name=None, level=0, formatter=&lt;Formatter(_style=&lt;StrFormatStyle(_fmt=&#x27; [&#123;levelname&#125; &#123;pathname&#125;:&#123;lineno&#125; &#123;funcName:4&#125;] &#123;message&#125;&#x27;) at remote 0x7f845757b460&gt;, _fmt=&#x27; [&#123;levelname&#125; &#123;pathname&#125;:&#123;lineno&#125; &#123;funcName:4&#125;] &#123;message&#125;&#x27;, datefm...(truncated)</span></span><br><span class="line">(gdb) py-locals </span><br><span class="line">lock = &lt;Lock(_semlock=&lt;_multiprocessing.SemLock at remote 0x7f84575bd5b0&gt;, acquire=&lt;built-in method acquire of _multiprocessing.SemLock object at remote 0x7f84575bd5b0&gt;, release=&lt;built-in method release of _multiprocessing.SemLock object at remote 0x7f84575bd5b0&gt;) at remote 0x7f84576d09d0&gt;</span><br><span class="line">logger = &lt;Logger(filters=[], name=<span class="string">&#x27;create_tosupport_pkg&#x27;</span>, level=10, parent=&lt;RootLogger(filters=[], name=<span class="string">&#x27;root&#x27;</span>, level=30, parent=None, propagate=True, handlers=[], disabled=False, _cache=&#123;&#125;) at remote 0x7f845771dd00&gt;, propagate=True, handlers=[&lt;FileHandler(baseFilename=<span class="string">&#x27;/usr1/jenkins/workspace/Version_pipeline_compile_iBMC/V2R2_trunk/temp/log/packet_log/create_tosupport_pkg.log&#x27;</span>, mode=<span class="string">&#x27;a&#x27;</span>, encoding=None, delay=False, filters=[], _name=None, level=0, formatter=&lt;Formatter(_style=&lt;StrFormatStyle(_fmt=<span class="string">&#x27; [&#123;levelname&#125; &#123;pathname&#125;:&#123;lineno&#125; &#123;funcName:4&#125;] &#123;message&#125;&#x27;</span>) at remote 0x7f845757b460&gt;, _fmt=<span class="string">&#x27; [&#123;levelname&#125; &#123;pathname&#125;:&#123;lineno&#125; &#123;funcName:4&#125;] &#123;message&#125;&#x27;</span>, datefmt=None) at remote 0x7f845757b430&gt;, lock=&lt;_thread.RLock at remote 0x7f845757b540&gt;, stream=&lt;_io.TextIOWrapper at remote 0x7f84575faba0&gt;) at remote 0x7f845757b4f0&gt;], disabled=False, _cache=&#123;20: True&#125;, manager=&lt;Manager(root=&lt;...&gt;, <span class="built_in">disable</span>=0, emittedNoHandlerWarning=False, loggerDict=&#123;<span class="string">&#x27;/usr1/jenkins/workspace/Version_pipeline_compile_iBMC/V2R2_trunk/application/build/utils...(truncated)</span></span><br><span class="line"><span class="string">release_dir = &#x27;</span>2488hv6_tosupport_release<span class="string">&#x27;</span></span><br><span class="line"><span class="string">archive_emmc_nand_dir = &#x27;</span>/usr1/jenkins/workspace/Version_pipeline_compile_iBMC/V2R2_trunk/application/build/utils/../../../application/src/resource/board/2488hv6/archive_emmc_nand<span class="string">&#x27;</span></span><br><span class="line"><span class="string">sw_code = &#x27;</span>05022XYJ<span class="string">&#x27;</span></span><br><span class="line"><span class="string">ar_ver_file = &#x27;</span>/usr1/jenkins/workspace/Version_pipeline_compile_iBMC/V2R2_trunk/application/build/utils/../../../application/src/resource/board/2488hv6/archive_emmc_nand/05022XYJ_version.ini<span class="string">&#x27;</span></span><br><span class="line"><span class="string">ver_num = &#x27;</span>3.03.10.01<span class="string">&#x27;</span></span><br><span class="line"><span class="string">xml_ver_num = &#x27;</span>3.03.10.01<span class="string">&#x27;</span></span><br><span class="line"><span class="string">hpm_file_name = &#x27;</span>2488HV6-iBMC_3.03.10.01.hpm<span class="string">&#x27;</span></span><br><span class="line"><span class="string">Fusion_pod_v5_board_tuple = (&#x27;</span>dh120v5<span class="string">&#x27;, &#x27;</span>dh141v5<span class="string">&#x27;)</span></span><br><span class="line"><span class="string">hpm_size = 57418095</span></span><br><span class="line"><span class="string">max_size = 73400320</span></span><br><span class="line"><span class="string">special_board_tuple = (&#x27;</span>TaiShan2280v2<span class="string">&#x27;, &#x27;</span>MM920<span class="string">&#x27;, &#x27;</span>MM921<span class="string">&#x27;)</span></span><br><span class="line"><span class="string">target_pkg = &#x27;</span>2488HV6-iBMC_3.03.10.01<span class="string">&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分析</p>
+<ul>
+<li><p>从c调用栈<code>do_futex_wait.constprop ()</code>python调用栈<code>_multiprocessing.SemLock</code>可看出, 线程似乎在等待获得锁,</p>
+</li>
+<li><p>从<code>File &quot;packet.py&quot;, line 3533, in create_tosupport_pkg</code>可以获得文件名和函数名</p>
+</li>
+<li><p>从代码可以看出, <code>create_tosupport_pkg</code> 通过入参与其他函数共享锁, 怀疑是其他函数锁没有释放导致, 排查后发现是<code>create_mib_pkg</code>函数</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 简化的代码逻辑如下</span><br><span class="line">def create_tosupport_pkg(lock):</span><br><span class="line">  lock.acquire()</span><br><span class="line">  create_localization_support_pkg()</span><br><span class="line">  lock.release()</span><br><span class="line">return</span><br><span class="line">def create_mib_pkg(lock):</span><br><span class="line">  lock.acquire()</span><br><span class="line">  create_localization_mib_pkg()</span><br><span class="line">  lock.release()</span><br><span class="line">return</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查日志发现, <code>create_localization_mib_pkg</code>抛出了异常, 未处理.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[2022-03-03T04:04:15.263Z]  [INFO packet.py:2273 delete_unification_unnecessary_files] delete_unification_unnecessary_files  ----------&gt; [begin]</span><br><span class="line">[2022-03-03T04:04:15.890Z] 当前进度:  [ 66.67%] #</span><br><span class="line">Process Process-14:</span><br><span class="line">[2022-03-03T04:04:15.890Z] Traceback (most recent call last):</span><br><span class="line">[2022-03-03T04:04:15.890Z]   File &quot;&#x2F;opt&#x2F;buildtools&#x2F;python-3.8.5&#x2F;lib&#x2F;python3.8&#x2F;shutil.py&quot;, line 788, in move</span><br><span class="line">[2022-03-03T04:04:15.890Z]     os.rename(src, real_dst)</span><br><span class="line">[2022-03-03T04:04:15.890Z] FileNotFoundError: [Errno 2] No such file or directory: &quot;&#x2F;usr1&#x2F;jenkins&#x2F;workspace&#x2F;Version_pipeline_compile_iBMC&#x2F;V2R2_trunk&#x2F;application&#x2F;build&#x2F;utils&#x2F;..&#x2F;..&#x2F;..&#x2F;temp&#x2F;ZOOM Hard&#39;Server 2488H V6-BMC_3.03.10.01_MIB&#x2F;ZOOM Hard&#39;Server 2488H V6-BMC_3.03.10.01_MIB.zip&quot; -&gt; &#39;2488H V6&#x2F;ToSupportE&#x2F;C&#39;</span><br><span class="line">[2022-03-03T04:04:15.890Z] </span><br><span class="line">[2022-03-03T04:04:15.890Z] During handling of the above exception, another exception occurred:</span><br><span class="line">[2022-03-03T04:04:15.890Z] </span><br><span class="line">[2022-03-03T04:04:15.890Z] Traceback (most recent call last):</span><br><span class="line">[2022-03-03T04:04:15.890Z]   File &quot;&#x2F;opt&#x2F;buildtools&#x2F;python-3.8.5&#x2F;lib&#x2F;python3.8&#x2F;multiprocessing&#x2F;process.py&quot;, line 315, in _bootstrap</span><br><span class="line">[2022-03-03T04:04:15.890Z]     self.run()</span><br><span class="line">[2022-03-03T04:04:15.890Z]   File &quot;&#x2F;opt&#x2F;buildtools&#x2F;python-3.8.5&#x2F;lib&#x2F;python3.8&#x2F;multiprocessing&#x2F;process.py&quot;, line 108, in run</span><br><span class="line">[2022-03-03T04:04:15.890Z]     self._target(*self._args, **self._kwargs)</span><br><span class="line">[2022-03-03T04:04:15.890Z]   File &quot;packet.py&quot;, line 3203, in create_mib_pkg</span><br><span class="line">[2022-03-03T04:04:15.890Z]     create_localization_mib_pkg(logger, &quot;zoom&quot;)</span><br><span class="line">[2022-03-03T04:04:15.890Z]   File &quot;packet.py&quot;, line 3151, in create_localization_mib_pkg</span><br><span class="line">[2022-03-03T04:04:15.890Z]     shutil.move(f&quot;&#123;g_temp_dir&#125;&#x2F;&#123;target_pkg&#125;&#x2F;&#123;target_pkg&#125;.zip&quot;, f&quot;&#123;localization_archive_dic[&#39;localization_tosupport_mib_dir&#39;]&#125;&quot;)</span><br><span class="line">[2022-03-03T04:04:15.890Z]   File &quot;&#x2F;opt&#x2F;buildtools&#x2F;python-3.8.5&#x2F;lib&#x2F;python3.8&#x2F;shutil.py&quot;, line 802, in move</span><br><span class="line">[2022-03-03T04:04:15.890Z]     copy_function(src, real_dst)</span><br><span class="line">[2022-03-03T04:04:15.890Z]   File &quot;&#x2F;opt&#x2F;buildtools&#x2F;python-3.8.5&#x2F;lib&#x2F;python3.8&#x2F;shutil.py&quot;, line 432, in copy2</span><br><span class="line">[2022-03-03T04:04:15.890Z]     copyfile(src, dst, follow_symlinks&#x3D;follow_symlinks)</span><br><span class="line">[2022-03-03T04:04:15.890Z]   File &quot;&#x2F;opt&#x2F;buildtools&#x2F;python-3.8.5&#x2F;lib&#x2F;python3.8&#x2F;shutil.py&quot;, line 261, in copyfile</span><br><span class="line">[2022-03-03T04:04:15.890Z]     with open(src, &#39;rb&#39;) as fsrc, open(dst, &#39;wb&#39;) as fdst:</span><br><span class="line">[2022-03-03T04:04:15.890Z] FileNotFoundError: [Errno 2] No such file or directory: &#39;2488H V6&#x2F;ToSupportE&#x2F;C&#39;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>通过git blame, 查看<code>create_localization_mib_pkg</code>相关代码, 可以确认是3天前的一个commit导致, 由相关引入人修改.</li>
+<li>至此, 问题解决.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>结论</p>
+<ul>
+<li>多个<code>create*_pkg</code>通过多线程处理构建过程.</li>
+<li>函数<code>create_tosupport_pkg</code> 与函数<code>create_mib_pkg</code>共享锁</li>
+<li><code>create_mib_pkg</code>调用函数<code>create_localization_mib_pkg</code>抛出了异常, 未处理</li>
+<li><code>create_mib_pkg</code>持有锁未释放, 导致<code>create_tosupport_pkg</code>线程总是处于等待中,</li>
+<li>多线程任务总是不结束, 表现为挂死.</li>
+</ul>
+</li>
+</ol>
+<h2 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h2><ul>
+<li>从python代码的选型, 设计, 编写, 上库, 看护, 都是草率而不负责任的, 在短短的一年时间就将原来的代码变成不可读不可测的垃圾, 这些是沉重的历史债务. 给调试带来了很大的困难, 这点前任总工是有责任的<br>问题点(TODO)<ul>
+<li>python转shell</li>
+<li>python调用shell</li>
+<li>python调用python</li>
+<li>python代码乱写</li>
+<li>随意上库, 完全不看护</li>
+<li>所谓的配置化</li>
+<li>所谓的拆分日志</li>
+<li>所谓的检查返回码(异常的典型错误使用)</li>
+<li>跨文件的全局变量</li>
+</ul>
+</li>
+<li>使用线程锁时, 应该使用<code>try-catch-finanly</code>的方式.</li>
+<li><code>fail-first</code>, 应该让构建系统, 代码, 对任何错误零容忍, 尽早地失败, 不会将错误传递到下游, 不会带来大量的垃圾日志</li>
+<li>检查日志的工作应该先做, 如何从大量垃圾日志中获取有用的信息, 除了人力搜索之外, 还应该自动化检查关键字</li>
+<li>谨慎地, 对日志进行分流和分割, 不要隐藏日志</li>
+</ul>
+<p>[^1]:<a target="_blank" rel="noopener" href="https://meteorix.github.io/2019/02/13/gdbpython/">gdb调试cpython | Meteorix’s Blog</a><br>[^2]:<a target="_blank" rel="noopener" href="https://github.com/python/cpython/blob/v3.8.5/Tools/gdb/libpython.py">python-dbg</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gdb/" rel="tag"># gdb</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/24/%E4%BD%BF%E7%94%A8python2%E5%BA%93paramiko-%E6%A8%A1%E6%8B%9Fssh%E7%99%BB%E5%BD%95%E7%BB%88%E7%AB%AF%EF%BC%8C%E6%A6%82%E7%8E%87%E6%80%A7%E5%87%BA%E7%8E%B0coredump/" rel="prev" title="使用python2库 paramiko 模拟ssh登录终端，概率性出现coredump">
+                  <i class="fa fa-chevron-left"></i> 使用python2库 paramiko 模拟ssh登录终端，概率性出现coredump
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/02/12/%E6%8A%8Aopencode%E5%81%9A%E6%88%90%E5%90%8E%E5%8F%B0%E6%9C%8D%E5%8A%A1/" rel="next" title="把opencode做成后台服务">
+                  把opencode做成后台服务 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BlindCat</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">43k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">39 mins.</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":null,"enable":true,"serverURL":"https://hexo-comment-98qvp2zvi-blindcat-10835.vercel.app/","placeholder":"Just go go","avatar":"robohash","pageSize":10,"visitor":false,"comment_count":true,"requiredMeta":[],"copyright":true,"allowUploadImage":true,"meta":["nick","mail","link"],"qiniuDebug":false,"qiniuDomain":null,"qiniuTokenUrl":null,"requiredFields":[],"el":"#waline-comments","libUrl":"https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js","path":"/2022/03/03/%E8%AE%B0%E4%B8%80%E6%AC%A1python%E7%BA%BF%E7%A8%8B%E6%8C%82%E6%AD%BB%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/","login":"","dark":"auto","avatarCDN":"https://seccdn.libravatar.org/avatar/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  if(!CONFIG.waline.allowUploadImage) {
+    CONFIG.waline.uploadImage = false;
+  }
+  else if(CONFIG.waline.qiniuDomain && CONFIG.waline.qiniuTokenUrl) {
+    CONFIG.waline.uploadImage = qiniuUploadImage;
+  }
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => {
+    new Waline(CONFIG.waline);
+  });
+});
+</script>
+
+</body>
+</html>
